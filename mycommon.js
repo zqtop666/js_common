@@ -1,11 +1,11 @@
 //region URL
-function seturl(key, value, href) {
+function zqseturl(key, value, href) {
     if (href.indexOf('?') === -1) href += '?';
     var searchreg = new RegExp("&?" + key + "=((?!&).)*&?");
     var kvstr = "&" + key + "=" + value; //子串
     if (value !== "") { //设置
         if (String.prototype.match.call(href, searchreg)) { //找到了
-            var anchor = getanchor(href); //拿到锚点
+            var anchor = zqgetanchor(href); //拿到锚点
             href = href.replace(anchor, ''); //临时去掉锚点
             href = String.prototype.replace.call(href, searchreg, kvstr + "&"); //替换子串
             if (href.substr(href.length - 1, 1) === "&") href = href.substr(0, href.length - 1); //最后为&时，去掉
@@ -13,7 +13,7 @@ function seturl(key, value, href) {
             href += anchor; //恢复锚点
         }
         else { //没找到
-            var anchor = getanchor(href); //拿到锚点
+            var anchor = zqgetanchor(href); //拿到锚点
             href = href.replace(anchor, ''); //临时去掉锚点
             if (href.substr(href.length - 1, 1) === "&") href = href.substr(0, href.length - 1); //最后为&时，去掉
             href += kvstr; //拼接子串
@@ -22,7 +22,7 @@ function seturl(key, value, href) {
         }
     } else { //删除
         if (String.prototype.match.call(href, searchreg)) { //找到了
-            var anchor = getanchor(href); //拿到锚点
+            var anchor = zqgetanchor(href); //拿到锚点
             href = href.replace(anchor, ''); //临时去掉锚点
             href = String.prototype.replace.call(href, searchreg, "&");
             if (href.substr(href.length - 1, 1) === "&") href = href.substr(0, href.length - 1); //最后为&时，去掉
@@ -37,7 +37,7 @@ function seturl(key, value, href) {
     return href;
 }
 
-function getanchor(url) {
+function zqgetanchor(url) {
     url = url.match(/&?#.*$/g, "");
     if (url) {
         url = url[0];
@@ -50,13 +50,13 @@ function getanchor(url) {
     return url;
 }
 
-function setanchor(anchor, url) {
+function zqsetanchor(anchor, url) {
     url = url.replace(/&?#.*$/g, "");
     url += "#" + anchor;
     return url;
 }
 
-function getMyQueryString(name) {
+function zqgetMyQueryString(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);
     if (r != null) return decodeURI(r[2]);
@@ -68,35 +68,35 @@ function getMyQueryString(name) {
 //#region 分页
 function mypageprev(index) {
     var i = index ? index : "";
-    var curpage = Number(getMyQueryString('page' + i));
+    var curpage = Number(zqgetMyQueryString('page' + i));
     if (curpage > 1) {
         curpage--;
     }
-    var url = seturl('page' + i, curpage, location.href);
+    var url = zqseturl('page' + i, curpage, location.href);
     location.href = url;
 }
 
 function mypagenext(pgcount, index) {
     var i = index ? index : "";
-    var curpage = Number(getMyQueryString('page' + i));
+    var curpage = Number(zqgetMyQueryString('page' + i));
     curpage = curpage ? curpage : 1;
     if (curpage < Number(pgcount)) {
         curpage++;
     }
-    var url = seturl('page' + i, curpage, location.href);
+    var url = zqseturl('page' + i, curpage, location.href);
     location.href = url;
 }
 
 function mypageto(curpage, index) {
     var i = index ? index : "";
-    var url = seturl('page' + i, curpage, location.href);
+    var url = zqseturl('page' + i, curpage, location.href);
     location.href = url;
 }
 
 //#endregion
 
 //#region 表单
-function inputfileOnChange(extArrWithDot) {
+function inputfileChange(extArrWithDot) {
     //在input[type=file]用call调用此方法，this代表input,如：inputfileChange.call(this,[])，扩展名数组别忘记带英文点
     //需要jquery支持
     var val = this.value.toLowerCase();
@@ -138,8 +138,23 @@ function runInterval(intvalID, overcondition, intvalFunc, intval) {
     }, int);
 }
 
-function delHtmlTag(str) {
+function zqdelHtmlTag(str) {
     return str.replace(/<[^>]+>/g, "");//去掉所有的html标记
+}
+
+function zqstrlen(str) {
+    var len = 0;
+    for (var i = 0; i < str.length; i++) {
+        var c = str.charCodeAt(i);
+        //单字节加1
+        if ((c >= 0x0001 && c <= 0x007e) || (0xff60 <= c && c <= 0xff9f)) {
+            len++;
+        }
+        else {
+            len += 2;
+        }
+    }
+    return len;
 }
 
 //#endregion
@@ -161,7 +176,7 @@ String.prototype.right = function (length) {
         return this;
     }
 };
-String.prototype.insertStr = function (location, str) {
+String.prototype.substr_replace = function (location, str) {
     //location 0开始
     if (location <= this.length - 1) {
         var l = this.left(location);
@@ -182,13 +197,16 @@ String.prototype.rtrim = function () {
     return this.replace(/(\s*$)/g, "");
 };
 String.prototype.setURL = function (key, val) {
-    return seturl(key, val, this);
-};
-String.prototype.removeAnchor = function (key, val) {
-    var anc = getanchor(this);
-    return this.replace(anc, "", this);
+    return zqseturl(key, val, this);
 };
 String.prototype.delHtmlTag = function () {
-    return delHtmlTag(this);
+    return zqdelHtmlTag(this);
+};
+String.prototype.strlen = function () {
+    return zqstrlen(this);
+};
+String.prototype.removeAnchor = function (key, val) {
+    var anc = zqgetanchor(this);
+    return this.replace(anc, "", this);
 };
 //endregion
