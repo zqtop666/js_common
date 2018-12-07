@@ -41,11 +41,11 @@ function zqgetanchor(url) {
     url = url.match(/&?#.*$/g, "");
     if (url) {
         url = url[0];
-        if (url.substr(0, 1) === "&") url = url.substr(1)
+        if (url.substr(0, 1) === "&") url = url.substr(1);
     }
-    else
+    else {
         url = "";
-
+    }
     url = url.replace(/[#]+/g, "#");
     return url;
 }
