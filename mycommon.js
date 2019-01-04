@@ -1,19 +1,19 @@
 //region URL
-function zqseturl(key, value, href) {
+var ZQ = {};
+ZQ.zqseturl = function (key, value, href) {
     if (href.indexOf('?') === -1) href += '?';
     var searchreg = new RegExp("&?" + key + "=((?!&).)*&?");
     var kvstr = "&" + key + "=" + value; //子串
     if (value !== "") { //设置
         if (String.prototype.match.call(href, searchreg)) { //找到了
-            var anchor = zqgetanchor(href); //拿到锚点
+            var anchor = ZQ.zqgetanchor(href); //拿到锚点
             href = href.replace(anchor, ''); //临时去掉锚点
             href = String.prototype.replace.call(href, searchreg, kvstr + "&"); //替换子串
             if (href.substr(href.length - 1, 1) === "&") href = href.substr(0, href.length - 1); //最后为&时，去掉
             if (href.substr(href.length - 1, 1) === "?" && href.indexOf("&") === -1) href = href.substr(0, href.length - 1); //最后为?时，去掉
             href += anchor; //恢复锚点
-        }
-        else { //没找到
-            var anchor = zqgetanchor(href); //拿到锚点
+        } else { //没找到
+            var anchor = ZQ.zqgetanchor(href); //拿到锚点
             href = href.replace(anchor, ''); //临时去掉锚点
             if (href.substr(href.length - 1, 1) === "&") href = href.substr(0, href.length - 1); //最后为&时，去掉
             href += kvstr; //拼接子串
@@ -22,81 +22,79 @@ function zqseturl(key, value, href) {
         }
     } else { //删除
         if (String.prototype.match.call(href, searchreg)) { //找到了
-            var anchor = zqgetanchor(href); //拿到锚点
+            var anchor = ZQ.zqgetanchor(href); //拿到锚点
             href = href.replace(anchor, ''); //临时去掉锚点
             href = String.prototype.replace.call(href, searchreg, "&");
             if (href.substr(href.length - 1, 1) === "&") href = href.substr(0, href.length - 1); //最后为&时，去掉
             if (href.substr(href.length - 1, 1) === "?" && href.indexOf("&") === -1) href = href.substr(0, href.length - 1); //最后为?时，去掉
             href += anchor; //恢复锚点
-        }
-        else { //没找到
+        } else { //没找到
             if (href.substr(href.length - 1, 1) === "&") href = href.substr(0, href.length - 1); //最后为&时，去掉
             if (href.substr(href.length - 1, 1) === "?" && href.indexOf("&") === -1) href = href.substr(0, href.length - 1); //最后为?时，去掉
         }
     }
     return href;
-}
+};
 
-function zqgetanchor(url) {
+ZQ.zqgetanchor = function (url) {
     url = url.match(/&?#.*$/g, "");
     if (url) {
         url = url[0];
         if (url.substr(0, 1) === "&") url = url.substr(1);
-    }
-    else {
+    } else {
         url = "";
     }
     url = url.replace(/[#]+/g, "#");
     return url;
-}
+};
 
-function zqsetanchor(anchor, url) {
+ZQ.zqsetanchor = function (anchor, url) {
     url = url.replace(/&?#.*$/g, "");
     url += "#" + anchor;
     return url;
-}
+};
 
-function zqgetMyQueryString(name) {
+ZQ.zqgetMyQueryString = function (name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);
     if (r != null) return decodeURI(r[2]);
     return null;
-}
+};
 
 //endregion
 
 //#region 分页
-function mypageprev(index) {
+ZQ.mypageprev = function (index) {
     var i = index ? index : "";
-    var curpage = Number(zqgetMyQueryString('page' + i));
+    var curpage = Number(ZQ.zqgetMyQueryString('page' + i));
     if (curpage > 1) {
         curpage--;
     }
-    var url = zqseturl('page' + i, curpage, location.href);
+    var url = ZQ.zqseturl('page' + i, curpage, location.href);
     location.href = url;
-}
+};
 
-function mypagenext(pgcount, index) {
+ZQ.mypagenext = function (pgcount, index) {
     var i = index ? index : "";
-    var curpage = Number(zqgetMyQueryString('page' + i));
+    var curpage = Number(ZQ.zqgetMyQueryString('page' + i));
     curpage = curpage ? curpage : 1;
     if (curpage < Number(pgcount)) {
         curpage++;
     }
-    var url = zqseturl('page' + i, curpage, location.href);
+    var url = ZQ.zqseturl('page' + i, curpage, location.href);
     location.href = url;
-}
+};
 
-function mypageto(curpage, index) {
+ZQ.mypageto = function (curpage, index) {
     var i = index ? index : "";
-    var url = zqseturl('page' + i, curpage, location.href);
+    var url = ZQ.zqseturl('page' + i, curpage, location.href);
     location.href = url;
-}
+};
 
 //#endregion
 
 //#region 表单
-function inputfileChange(extArrWithDot) {
+ZQ.inputfileChange = function (extArrWithDot) {
     //在input[type=file]用call调用此方法，this代表input,如：inputfileChange.call(this,[])，扩展名数组别忘记带英文点
     //需要jquery支持
     var val = this.value.toLowerCase();
@@ -117,12 +115,12 @@ function inputfileChange(extArrWithDot) {
         jQuery(this).remove();
         par.prepend(that);
     }
-}
+};
 
 //#endregion
 
 //#region 其他
-function runInterval(intvalID, overcondition, intvalFunc, intval) {
+ZQ.runInterval = function runInterval(intvalID, overcondition, intvalFunc, intval) {
     zqintval = typeof zqintval === "undefined" ? [] : zqintval;
     var over = overcondition;
     var func = intvalFunc;
@@ -131,31 +129,29 @@ function runInterval(intvalID, overcondition, intvalFunc, intval) {
         if (eval("(" + over + ")") === true) {
             clearInterval(zqintval[intvalID]);
             zqintval[intvalID] = null;
-        }
-        else {
+        } else {
             func();
         }
     }, int);
-}
+};
 
-function zqdelHtmlTag(str) {
+ZQ.zqdelHtmlTag = function (str) {
     return str.replace(/<[^>]+>/g, "");//去掉所有的html标记
-}
+};
 
-function zqstrlen(str) {
+ZQ.zqstrlen = function (str) {
     var len = 0;
     for (var i = 0; i < str.length; i++) {
         var c = str.charCodeAt(i);
         //单字节加1
         if ((c >= 0x0001 && c <= 0x007e) || (0xff60 <= c && c <= 0xff9f)) {
             len++;
-        }
-        else {
+        } else {
             len += 2;
         }
     }
     return len;
-}
+};
 
 //#endregion
 
@@ -163,16 +159,14 @@ function zqstrlen(str) {
 String.prototype.left = function (length) {
     if (length <= this.length) {
         return this.substr(0, length);
-    }
-    else {
+    } else {
         return this;
     }
 };
 String.prototype.right = function (length) {
     if (length <= this.length) {
         return this.substr(this.length - length, length);
-    }
-    else {
+    } else {
         return this;
     }
 };
@@ -182,8 +176,7 @@ String.prototype.substr_replace = function (location, str) {
         var l = this.left(location);
         var r = this.replace(l, "");
         return (l + str + r);
-    }
-    else {
+    } else {
         return (this + str);
     }
 };
@@ -196,17 +189,17 @@ String.prototype.ltrim = function () {
 String.prototype.rtrim = function () {
     return this.replace(/(\s*$)/g, "");
 };
-String.prototype.setURL = function (key, val) {
-    return zqseturl(key, val, this);
+String.prototype.seturl = function (key, val) {
+    return ZQ.zqseturl(key, val, this);
 };
 String.prototype.delHtmlTag = function () {
-    return zqdelHtmlTag(this);
+    return ZQ.zqdelHtmlTag(this);
 };
 String.prototype.strlen = function () {
-    return zqstrlen(this);
+    return ZQ.zqstrlen(this);
 };
 String.prototype.removeAnchor = function (key, val) {
-    var anc = zqgetanchor(this);
+    var anc = ZQ.zqgetanchor(this);
     return this.replace(anc, "", this);
 };
 //endregion
