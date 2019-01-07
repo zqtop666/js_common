@@ -152,7 +152,19 @@ ZQ.zqstrlen = function (str) {
     }
     return len;
 };
-
+ZQ.getScrollWidth=function() {
+    var odiv = document.createElement('div'),
+        styles = {
+            width: '100px',
+            height: '100px',
+            overflowY: 'scroll'
+        }, i, scrollbarWidth;
+    for (i in styles) odiv.style[i] = styles[i];
+    document.body.appendChild(odiv);
+    scrollbarWidth = odiv.offsetWidth - odiv.clientWidth;
+    odiv.remove();
+    return scrollbarWidth;
+}
 //#endregion
 
 //region 字符串
