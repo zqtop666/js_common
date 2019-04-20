@@ -8,7 +8,7 @@ var ZQ = {
         href = href.replace(anchor, ''); //临时去掉锚点
         if (href.indexOf("?") === -1) {
             href += "?&";
-        } else {
+        } else if (href.indexOf("?&") === -1) {
             href = href.replace("?", "?&");
         }
         if (href.right(1) !== "&") href += "&";
