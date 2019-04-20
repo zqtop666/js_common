@@ -1,171 +1,164 @@
+var ZQ = {
+
 //region URL
-var ZQ = {};
-ZQ.zqseturl = function (key, value, href) {
-    if (href.indexOf('?') === -1) href += '?';
-    var searchreg = new RegExp("&?" + key + "=((?!&).)*&?");
-    var kvstr = "&" + key + "=" + value; //子串
-    if (value !== "") { //设置
-        if (String.prototype.match.call(href, searchreg)) { //找到了
-            var anchor = ZQ.zqgetanchor(href); //拿到锚点
-            href = href.replace(anchor, ''); //临时去掉锚点
-            href = String.prototype.replace.call(href, searchreg, kvstr + "&"); //替换子串
-            if (href.substr(href.length - 1, 1) === "&") href = href.substr(0, href.length - 1); //最后为&时，去掉
-            if (href.substr(href.length - 1, 1) === "?" && href.indexOf("&") === -1) href = href.substr(0, href.length - 1); //最后为?时，去掉
-            href += anchor; //恢复锚点
-        } else { //没找到
-            var anchor = ZQ.zqgetanchor(href); //拿到锚点
-            href = href.replace(anchor, ''); //临时去掉锚点
-            if (href.substr(href.length - 1, 1) === "&") href = href.substr(0, href.length - 1); //最后为&时，去掉
-            href += kvstr; //拼接子串
-            //if (href.substr(href.length - 1, 1) === "?" && href.indexOf("&") === -1) href = href.substr(0, href.length - 1); //最后为?时，去掉
-            href += anchor; //恢复锚点
+    zqseturl: function (key, value, href) {
+        var searchreg = new RegExp("&" + key + "=((?!&).)*&");
+        var kvstr = key + "=" + value; //子串
+        var anchor = ZQ.zqgetanchor(href); //拿到锚点
+        href = href.replace(anchor, ''); //临时去掉锚点
+        if (href.indexOf("?") === -1) {
+            href += "?&";
+        } else {
+            href = href.replace("?", "?&");
         }
-    } else { //删除
-        if (String.prototype.match.call(href, searchreg)) { //找到了
-            var anchor = ZQ.zqgetanchor(href); //拿到锚点
-            href = href.replace(anchor, ''); //临时去掉锚点
-            href = String.prototype.replace.call(href, searchreg, "&");
-            if (href.substr(href.length - 1, 1) === "&") href = href.substr(0, href.length - 1); //最后为&时，去掉
-            if (href.substr(href.length - 1, 1) === "?" && href.indexOf("&") === -1) href = href.substr(0, href.length - 1); //最后为?时，去掉
-            href += anchor; //恢复锚点
-        } else { //没找到
-            if (href.substr(href.length - 1, 1) === "&") href = href.substr(0, href.length - 1); //最后为&时，去掉
-            if (href.substr(href.length - 1, 1) === "?" && href.indexOf("&") === -1) href = href.substr(0, href.length - 1); //最后为?时，去掉
+        if (href.right(1) !== "&") href += "&";
+        if (value !== "") { //设置
+            if (String.prototype.match.call(href, searchreg)) { //找到了
+                href = String.prototype.replace.call(href, searchreg, "&" + kvstr + "&"); //替换子串
+                href += anchor; //恢复锚点
+            } else { //没找到
+                href += kvstr + "&"; //拼接子串
+                href += anchor; //恢复锚点
+            }
+        } else { //删除
+            if (String.prototype.match.call(href, searchreg)) { //找到了
+                href = String.prototype.replace.call(href, searchreg, "&");
+                href += anchor; //恢复锚点
+            } else { //没找到
+            }
         }
-    }
-    return href;
-};
+        return href;
+    },
 
-ZQ.zqgetanchor = function (url) {
-    url = url.match(/&?#.*$/g, "");
-    if (url) {
-        url = url[0];
-        if (url.substr(0, 1) === "&") url = url.substr(1);
-    } else {
-        url = "";
-    }
-    url = url.replace(/[#]+/g, "#");
-    return url;
-};
+    zqgetanchor: function (url) {
+        url = url.match(/&?#.*$/g, "");
+        if (url) {
+            url = url[0];
+            if (url.substr(0, 1) === "&") url = url.substr(1);
+        } else {
+            url = "";
+        }
+        url = url.replace(/[#]+/g, "#");
+        return url;
+    },
 
-ZQ.zqsetanchor = function (anchor, url) {
-    url = url.replace(/&?#.*$/g, "");
-    url += "#" + anchor;
-    return url;
-};
+    zqsetanchor: function (anchor, url) {
+        url = url.replace(/&?#.*$/g, "");
+        url += "#" + anchor;
+        return url;
+    },
 
-ZQ.zqgetMyQueryString = function (name) {
-    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-    var r = window.location.search.substr(1).match(reg);
-    if (r != null) return decodeURI(r[2]);
-    return null;
-};
-
+    zqgetMyQueryString: function (name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return decodeURI(r[2]);
+        return null;
+    },
 //endregion
 
 //#region 分页
-ZQ.mypageprev = function (index) {
-    var i = index ? index : "";
-    var curpage = Number(ZQ.zqgetMyQueryString('page' + i));
-    if (curpage > 1) {
-        curpage--;
-    }
-    var url = ZQ.zqseturl('page' + i, curpage, location.href);
-    location.href = url;
-};
+    mypageprev: function (index) {
+        var i = index ? index : "";
+        var curpage = Number(ZQ.zqgetMyQueryString('page' + i));
+        if (curpage > 1) {
+            curpage--;
+        }
+        var url = ZQ.zqseturl('page' + i, curpage, location.href);
+        location.href = url;
+    },
 
-ZQ.mypagenext = function (pgcount, index) {
-    var i = index ? index : "";
-    var curpage = Number(ZQ.zqgetMyQueryString('page' + i));
-    curpage = curpage ? curpage : 1;
-    if (curpage < Number(pgcount)) {
-        curpage++;
-    }
-    var url = ZQ.zqseturl('page' + i, curpage, location.href);
-    location.href = url;
-};
+    mypagenext: function (pgcount, index) {
+        var i = index ? index : "";
+        var curpage = Number(ZQ.zqgetMyQueryString('page' + i));
+        curpage = curpage ? curpage : 1;
+        if (curpage < Number(pgcount)) {
+            curpage++;
+        }
+        var url = ZQ.zqseturl('page' + i, curpage, location.href);
+        location.href = url;
+    },
 
-ZQ.mypageto = function (curpage, index) {
-    var i = index ? index : "";
-    var url = ZQ.zqseturl('page' + i, curpage, location.href);
-    location.href = url;
-};
-
+    mypageto: function (curpage, index) {
+        var i = index ? index : "";
+        var url = ZQ.zqseturl('page' + i, curpage, location.href);
+        location.href = url;
+    },
 //#endregion
 
 //#region 表单
-ZQ.inputfileChange = function (extArrWithDot) {
-    //在input[type=file]用call调用此方法，this代表input,如：inputfileChange.call(this,[])，扩展名数组别忘记带英文点
-    //需要jquery支持
-    var val = this.value.toLowerCase();
-    var check = false;
-    for (var i = 0; i < extArrWithDot.length; i++) {
-        var extlen = extArrWithDot[i].length;
-        var ext = extArrWithDot[i].toLowerCase();
-        if (val.right(extlen) === ext) {
-            check = true;
+    inputfileChange: function (extArrWithDot) {
+        //在input[type=file]用call调用此方法，this代表input,如：inputfileChange.call(this,[])，扩展名数组别忘记带英文点
+        //需要jquery支持
+        var val = this.value.toLowerCase();
+        var check = false;
+        for (var i = 0; i < extArrWithDot.length; i++) {
+            var extlen = extArrWithDot[i].length;
+            var ext = extArrWithDot[i].toLowerCase();
+            if (val.right(extlen) === ext) {
+                check = true;
+            }
         }
-    }
-    if (check == false) {
-        alert("文件格式错误！");
-    } else {
-        var par = jQuery(this).parent("*").eq(0);
-        var name = jQuery(this).attr('name');
-        var that = jQuery("<input type='file' name='" + name + "' />");
-        jQuery(this).remove();
-        par.prepend(that);
-    }
-};
-
+        if (check == false) {
+            alert("文件格式错误！");
+        } else {
+            var par = jQuery(this).parent("*").eq(0);
+            var name = jQuery(this).attr('name');
+            var that = jQuery("<input type='file' name='" + name + "' />");
+            jQuery(this).remove();
+            par.prepend(that);
+        }
+    },
 //#endregion
 
 //#region 其他
-ZQ.runInterval = function runInterval(intvalID, overcondition, intvalFunc, intval) {
-    zqintval = typeof zqintval === "undefined" ? [] : zqintval;
-    var over = overcondition;
-    var func = intvalFunc;
-    var int = intval;
-    zqintval[intvalID] = setInterval(function () {
-        if (eval("(" + over + ")") === true) {
-            clearInterval(zqintval[intvalID]);
-            zqintval[intvalID] = null;
-        } else {
-            func();
-        }
-    }, int);
-};
+    runInterval: function runInterval(intvalID, overcondition, intvalFunc, intval) {
+        zqintval = typeof zqintval === "undefined" ? [] : zqintval;
+        var over = overcondition;
+        var func = intvalFunc;
+        var int = intval;
+        zqintval[intvalID] = setInterval(function () {
+            if (eval("(" + over + ")") === true) {
+                clearInterval(zqintval[intvalID]);
+                zqintval[intvalID] = null;
+            } else {
+                func();
+            }
+        }, int);
+    },
+    zqdelHtmlTag: function (str) {
+        return str.replace(/<[^>]+>/g, "");//去掉所有的html标记
+    },
 
-ZQ.zqdelHtmlTag = function (str) {
-    return str.replace(/<[^>]+>/g, "");//去掉所有的html标记
-};
-
-ZQ.zqstrlen = function (str) {
-    var len = 0;
-    for (var i = 0; i < str.length; i++) {
-        var c = str.charCodeAt(i);
-        //单字节加1
-        if ((c >= 0x0001 && c <= 0x007e) || (0xff60 <= c && c <= 0xff9f)) {
-            len++;
-        } else {
-            len += 2;
+    zqstrlen: function (str) {
+        var len = 0;
+        for (var i = 0; i < str.length; i++) {
+            var c = str.charCodeAt(i);
+            //单字节加1
+            if ((c >= 0x0001 && c <= 0x007e) || (0xff60 <= c && c <= 0xff9f)) {
+                len++;
+            } else {
+                len += 2;
+            }
         }
+        return len;
+    },
+    getScrollWidth: function () {
+        var odiv = document.createElement('div'),
+            styles = {
+                width: '100px',
+                height: '100px',
+                overflowY: 'scroll'
+            }, i, scrollbarWidth;
+        for (i in styles) odiv.style[i] = styles[i];
+        document.body.appendChild(odiv);
+        scrollbarWidth = odiv.offsetWidth - odiv.clientWidth;
+        odiv.remove();
+        return scrollbarWidth;
     }
-    return len;
+    //#endregion
+
 };
-ZQ.getScrollWidth=function() {
-    var odiv = document.createElement('div'),
-        styles = {
-            width: '100px',
-            height: '100px',
-            overflowY: 'scroll'
-        }, i, scrollbarWidth;
-    for (i in styles) odiv.style[i] = styles[i];
-    document.body.appendChild(odiv);
-    scrollbarWidth = odiv.offsetWidth - odiv.clientWidth;
-    odiv.remove();
-    return scrollbarWidth;
-}
-//#endregion
+
 
 //region 字符串
 String.prototype.left = function (length) {
