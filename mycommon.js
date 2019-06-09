@@ -1,6 +1,6 @@
 var ZQ = {
 
-//region URL
+    //region URL
     zqseturl: function (key, value, href) {
         var searchreg = new RegExp("&" + key + "=((?!&).)*&");
         var kvstr = key + "=" + value; //子串
@@ -54,9 +54,9 @@ var ZQ = {
         if (r != null) return decodeURI(r[2]);
         return null;
     },
-//endregion
+    //endregion
 
-//#region 分页
+    //#region 分页
     mypageprev: function (index) {
         var i = index ? index : "";
         var curpage = Number(ZQ.zqgetMyQueryString('page' + i));
@@ -83,9 +83,9 @@ var ZQ = {
         var url = ZQ.zqseturl('page' + i, curpage, location.href);
         location.href = url;
     },
-//#endregion
+    //#endregion
 
-//#region 表单
+    //#region 表单
     inputfileChange: function (extArrWithDot) {
         //在input[type=file]用call调用此方法，this代表input,如：inputfileChange.call(this,[])，扩展名数组别忘记带英文点
         //需要jquery支持
@@ -108,9 +108,9 @@ var ZQ = {
             par.prepend(that);
         }
     },
-//#endregion
+    //#endregion
 
-//#region 其他
+    //#region 其他
     runInterval: function runInterval(intvalID, overcondition, intvalFunc, intval) {
         zqintval = typeof zqintval === "undefined" ? [] : zqintval;
         var over = overcondition;
@@ -126,7 +126,7 @@ var ZQ = {
         }, int);
     },
     zqdelHtmlTag: function (str) {
-        return str.replace(/<[^>]+>/g, "");//去掉所有的html标记
+        return str.replace(/<[^>]+>/g, ""); //去掉所有的html标记
     },
 
     zqstrlen: function (str) {
@@ -148,7 +148,8 @@ var ZQ = {
                 width: '100px',
                 height: '100px',
                 overflowY: 'scroll'
-            }, i, scrollbarWidth;
+            },
+            i, scrollbarWidth;
         for (i in styles) odiv.style[i] = styles[i];
         document.body.appendChild(odiv);
         scrollbarWidth = odiv.offsetWidth - odiv.clientWidth;
