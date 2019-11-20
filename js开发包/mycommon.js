@@ -208,4 +208,15 @@ String.prototype.removeAnchor = function (key, val) {
     var anc = ZQ.zqgetanchor(this);
     return this.replace(anc, "", this);
 };
+String.prototype.getQueryString = function (name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var str = "";
+    if (this.indexOf("?&") !== -1)
+        str = this.substr(this.indexOf("?&") + 2);
+    else if (this.indexOf("?") !== -1)
+        str = this.substr(this.indexOf("?") + 1);
+    var r = str.match(reg);
+    if (r != null) return decodeURI(r[2]);
+    return null;
+};
 //endregion
