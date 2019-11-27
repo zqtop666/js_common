@@ -1,5 +1,4 @@
 var ZQ = {
-
     //region URL
     zqseturl: function (key, value, href) {
         var searchreg = new RegExp("&" + key + "=((?!&).)*&");
@@ -159,64 +158,64 @@ var ZQ = {
     //#endregion
 
 };
-
-
+(function () {
 //region 字符串
-String.prototype.left = function (length) {
-    if (length <= this.length) {
-        return this.substr(0, length);
-    } else {
-        return this;
-    }
-};
-String.prototype.right = function (length) {
-    if (length <= this.length) {
-        return this.substr(this.length - length, length);
-    } else {
-        return this;
-    }
-};
-String.prototype.substr_replace = function (location, str) {
-    //location 0开始
-    if (location <= this.length - 1) {
-        var l = this.left(location);
-        var r = this.replace(l, "");
-        return (l + str + r);
-    } else {
-        return (this + str);
-    }
-};
-String.prototype.trim = function () {
-    return this.replace(/(^\s*)|(\s*$)/g, "");
-};
-String.prototype.ltrim = function () {
-    return this.replace(/(^\s*)/g, "");
-};
-String.prototype.rtrim = function () {
-    return this.replace(/(\s*$)/g, "");
-};
-String.prototype.seturl = function (key, val) {
-    return ZQ.zqseturl(key, val, this);
-};
-String.prototype.delHtmlTag = function () {
-    return ZQ.zqdelHtmlTag(this);
-};
-String.prototype.strlen = function () {
-    return ZQ.zqstrlen(this);
-};
-String.prototype.removeAnchor = function (key, val) {
-    var anc = ZQ.zqgetanchor(this);
-    return this.replace(anc, "", this);
-};
-String.prototype.getQueryString = function (name) {
-    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-    var str = "";
-    if (this.indexOf("?&") !== -1)
-        str = this.substr(this.indexOf("?&") + 2);
-    else if (this.indexOf("?") !== -1)
-        str = this.substr(this.indexOf("?") + 1);
-    var r = str.match(reg);
-    if (r != null) return decodeURI(r[2]);
-    return null;
-};
+    String.prototype.left = function (length) {
+        if (length <= this.length) {
+            return this.substr(0, length);
+        } else {
+            return this;
+        }
+    };
+    String.prototype.right = function (length) {
+        if (length <= this.length) {
+            return this.substr(this.length - length, length);
+        } else {
+            return this;
+        }
+    };
+    String.prototype.substr_replace = function (location, str) {
+        //location 0开始
+        if (location <= this.length - 1) {
+            var l = this.left(location);
+            var r = this.replace(l, "");
+            return (l + str + r);
+        } else {
+            return (this + str);
+        }
+    };
+    String.prototype.trim = function () {
+        return this.replace(/(^\s*)|(\s*$)/g, "");
+    };
+    String.prototype.ltrim = function () {
+        return this.replace(/(^\s*)/g, "");
+    };
+    String.prototype.rtrim = function () {
+        return this.replace(/(\s*$)/g, "");
+    };
+    String.prototype.seturl = function (key, val) {
+        return ZQ.zqseturl(key, val, this);
+    };
+    String.prototype.delHtmlTag = function () {
+        return ZQ.zqdelHtmlTag(this);
+    };
+    String.prototype.strlen = function () {
+        return ZQ.zqstrlen(this);
+    };
+    String.prototype.removeAnchor = function (key, val) {
+        var anc = ZQ.zqgetanchor(this);
+        return this.replace(anc, "", this);
+    };
+    String.prototype.getQueryString = function (name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var str = "";
+        if (this.indexOf("?&") !== -1)
+            str = this.substr(this.indexOf("?&") + 2);
+        else if (this.indexOf("?") !== -1)
+            str = this.substr(this.indexOf("?") + 1);
+        var r = str.match(reg);
+        if (r != null) return decodeURI(r[2]);
+        return null;
+    };
 //endregion
+})();
