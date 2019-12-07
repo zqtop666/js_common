@@ -196,15 +196,21 @@ var ZQ = {
     String.prototype.seturl = function (key, val) {
         return ZQ.zqseturl(key, val, this);
     };
+    String.prototype.setanchor = function (anchor) {
+        return ZQ.zqsetanchor(anchor, this);
+    };
+    String.prototype.getanchor = function () {
+        return ZQ.zqgetanchor(this);
+    };
+    String.prototype.removeanchor = function () {
+        var anchor = ZQ.zqgetanchor(this);
+        return this.replace(anchor, "", this);
+    };
     String.prototype.delHtmlTag = function () {
         return ZQ.zqdelHtmlTag(this);
     };
     String.prototype.strlen = function () {
         return ZQ.zqstrlen(this);
-    };
-    String.prototype.removeAnchor = function (key, val) {
-        var anc = ZQ.zqgetanchor(this);
-        return this.replace(anc, "", this);
     };
     String.prototype.getQueryString = function (name) {
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
