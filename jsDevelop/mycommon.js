@@ -43,6 +43,7 @@ var ZQ = {
 
     zqsetanchor: function (anchor, url) {
         url = url.replace(/&?#.*$/g, "");
+        anchor = anchor.replace('#', '');
         url += "#" + anchor;
         return url;
     },
@@ -197,7 +198,8 @@ var ZQ = {
         return ZQ.zqseturl(key, val, this);
     };
     String.prototype.setanchor = function (anchor) {
-        return ZQ.zqsetanchor(anchor, this);
+        var urlremoveanchor=this.removeanchor();
+        return ZQ.zqsetanchor(anchor, urlremoveanchor);
     };
     String.prototype.getanchor = function () {
         return ZQ.zqgetanchor(this);
@@ -206,13 +208,13 @@ var ZQ = {
         var anchor = ZQ.zqgetanchor(this);
         return this.replace(anchor, "", this);
     };
-    String.prototype.delHtmlTag = function () {
+    String.prototype.delhtmltag = function () {
         return ZQ.zqdelHtmlTag(this);
     };
     String.prototype.strlen = function () {
         return ZQ.zqstrlen(this);
     };
-    String.prototype.getQueryString = function (name) {
+    String.prototype.getquerystring = function (name) {
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
         var str = "";
         if (this.indexOf("?&") !== -1)
