@@ -179,6 +179,98 @@ module.exports = function array_chunk(input, size, preserveKeys) {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+module.exports = function array_column(input, ColumnKey) {
+  var IndexKey = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+  // eslint-disable-line camelcase
+  //   discuss at: http://locutus.io/php/array_column/
+  //   original by: Enzo Dañobeytía
+  //   example 1: array_column([{name: 'Alex', value: 1}, {name: 'Elvis', value: 2}, {name: 'Michael', value: 3}], 'name')
+  //   returns 1: {0: "Alex", 1: "Elvis", 2: "Michael"}
+  //   example 2: array_column({0: {name: 'Alex', value: 1}, 1: {name: 'Elvis', value: 2}, 2: {name: 'Michael', value: 3}}, 'name')
+  //   returns 2: {0: "Alex", 1: "Elvis", 2: "Michael"}
+  //   example 3: array_column([{name: 'Alex', value: 1}, {name: 'Elvis', value: 2}, {name: 'Michael', value: 3}], 'name', 'value')
+  //   returns 3: {1: "Alex", 2: "Elvis", 3: "Michael"}
+  //   example 4: array_column([{name: 'Alex', value: 1}, {name: 'Elvis', value: 2}, {name: 'Michael', value: 3}], null, 'value')
+  //   returns 4: {1: {name: 'Alex', value: 1}, 2: {name: 'Elvis', value: 2}, 3: {name: 'Michael', value: 3}}
+
+  if (input !== null && ((typeof input === 'undefined' ? 'undefined' : _typeof(input)) === 'object' || Array.isArray(input))) {
+    var newarray = [];
+    if ((typeof input === 'undefined' ? 'undefined' : _typeof(input)) === 'object') {
+      var temparray = [];
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = Object.keys(input)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var key = _step.value;
+
+          temparray.push(input[key]);
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      input = temparray;
+    }
+    if (Array.isArray(input)) {
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = input.keys()[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var _key = _step2.value;
+
+          if (IndexKey && input[_key][IndexKey]) {
+            if (ColumnKey) {
+              newarray[input[_key][IndexKey]] = input[_key][ColumnKey];
+            } else {
+              newarray[input[_key][IndexKey]] = input[_key];
+            }
+          } else {
+            if (ColumnKey) {
+              newarray.push(input[_key][ColumnKey]);
+            } else {
+              newarray.push(input[_key]);
+            }
+          }
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+    }
+    return Object.assign({}, newarray);
+  }
+};
+
+},{}],5:[function(require,module,exports){
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 module.exports = function array_combine(keys, values) {
   // eslint-disable-line camelcase
   //  discuss at: http://locutus.io/php/array_combine/
@@ -221,7 +313,7 @@ module.exports = function array_combine(keys, values) {
   return newArray;
 };
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -284,7 +376,7 @@ module.exports = function array_count_values(array) {
   return tmpArr;
 };
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 module.exports = function array_diff(arr1) {
@@ -320,7 +412,7 @@ module.exports = function array_diff(arr1) {
   return retArr;
 };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 module.exports = function array_diff_assoc(arr1) {
@@ -356,7 +448,7 @@ module.exports = function array_diff_assoc(arr1) {
   return retArr;
 };
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 module.exports = function array_diff_key(arr1) {
@@ -394,7 +486,7 @@ module.exports = function array_diff_key(arr1) {
   return retArr;
 };
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -438,7 +530,7 @@ module.exports = function array_diff_uassoc(arr1) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -482,7 +574,7 @@ module.exports = function array_diff_ukey(arr1) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 "use strict";
 
 module.exports = function array_fill(startIndex, num, mixedVal) {
@@ -505,7 +597,7 @@ module.exports = function array_fill(startIndex, num, mixedVal) {
   return tmpArr;
 };
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 module.exports = function array_fill_keys(keys, value) {
@@ -527,7 +619,7 @@ module.exports = function array_fill_keys(keys, value) {
   return retObj;
 };
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 module.exports = function array_filter(arr, func) {
@@ -567,7 +659,7 @@ module.exports = function array_filter(arr, func) {
   return retObj;
 };
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 "use strict";
 
 module.exports = function array_flip(trans) {
@@ -592,7 +684,7 @@ module.exports = function array_flip(trans) {
   return tmpArr;
 };
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 module.exports = function array_intersect(arr1) {
@@ -638,7 +730,7 @@ module.exports = function array_intersect(arr1) {
   return retArr;
 };
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 module.exports = function array_intersect_assoc(arr1) {
@@ -683,7 +775,7 @@ module.exports = function array_intersect_assoc(arr1) {
   return retArr;
 };
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 module.exports = function array_intersect_key(arr1) {
@@ -734,7 +826,7 @@ module.exports = function array_intersect_key(arr1) {
   return retArr;
 };
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -791,7 +883,7 @@ module.exports = function array_intersect_uassoc(arr1) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -848,7 +940,7 @@ module.exports = function array_intersect_ukey(arr1) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 "use strict";
 
 module.exports = function array_key_exists(key, search) {
@@ -866,7 +958,7 @@ module.exports = function array_key_exists(key, search) {
   return key in search;
 };
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 'use strict';
 
 module.exports = function array_keys(input, searchValue, argStrict) {
@@ -908,7 +1000,7 @@ module.exports = function array_keys(input, searchValue, argStrict) {
   return tmpArr;
 };
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -969,7 +1061,7 @@ module.exports = function array_map(callback) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 'use strict';
 
 module.exports = function array_merge() {
@@ -1037,7 +1129,7 @@ module.exports = function array_merge() {
   return retObj;
 };
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -1078,7 +1170,7 @@ module.exports = function array_merge_recursive(arr1, arr2) {
   return arr1;
 };
 
-},{"../array/array_merge":23}],25:[function(require,module,exports){
+},{"../array/array_merge":24}],26:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -1367,7 +1459,7 @@ module.exports = function array_multisort(arr) {
   return true;
 };
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 'use strict';
 
 module.exports = function array_pad(input, padSize, padValue) {
@@ -1406,7 +1498,7 @@ module.exports = function array_pad(input, padSize, padValue) {
   return pad;
 };
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 'use strict';
 
 module.exports = function array_pop(inputArr) {
@@ -1458,7 +1550,7 @@ module.exports = function array_pop(inputArr) {
   }
 };
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 'use strict';
 
 module.exports = function array_product(input) {
@@ -1485,7 +1577,7 @@ module.exports = function array_product(input) {
   return product;
 };
 
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 'use strict';
 
 module.exports = function array_push(inputArr) {
@@ -1534,7 +1626,7 @@ module.exports = function array_push(inputArr) {
   return len + i - 1;
 };
 
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 'use strict';
 
 module.exports = function array_rand(array, num) {
@@ -1571,7 +1663,7 @@ module.exports = function array_rand(array, num) {
   return num === 1 ? keys[0] : keys.slice(0, num);
 };
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 "use strict";
 
 module.exports = function array_reduce(aInput, callback) {
@@ -1601,7 +1693,7 @@ module.exports = function array_reduce(aInput, callback) {
   return res;
 };
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 'use strict';
 
 module.exports = function array_replace(arr) {
@@ -1636,7 +1728,7 @@ module.exports = function array_replace(arr) {
   return retObj;
 };
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -1685,7 +1777,7 @@ module.exports = function array_replace_recursive(arr) {
   return retObj;
 };
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
 module.exports = function array_reverse(array, preserveKeys) {
@@ -1727,7 +1819,7 @@ module.exports = function array_reverse(array, preserveKeys) {
   return tmpArr;
 };
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -1779,7 +1871,7 @@ module.exports = function array_search(needle, haystack, argStrict) {
   return false;
 };
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 "use strict";
 
 module.exports = function array_shift(inputArr) {
@@ -1818,7 +1910,7 @@ module.exports = function array_shift(inputArr) {
   }
 };
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 'use strict';
 
 module.exports = function array_slice(arr, offst, lgth, preserveKeys) {
@@ -1893,7 +1985,7 @@ module.exports = function array_slice(arr, offst, lgth, preserveKeys) {
   }
 };
 
-},{"../var/is_int":79}],38:[function(require,module,exports){
+},{"../var/is_int":80}],39:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -2017,7 +2109,7 @@ module.exports = function array_splice(arr, offst, lgth, replacement) {
   return arr.splice(offst, lgth);
 };
 
-},{"../var/is_int":79}],39:[function(require,module,exports){
+},{"../var/is_int":80}],40:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -2055,7 +2147,7 @@ module.exports = function array_sum(array) {
   return sum;
 };
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2099,7 +2191,7 @@ module.exports = function array_udiff(arr1) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2140,7 +2232,7 @@ module.exports = function array_udiff_assoc(arr1) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2187,7 +2279,7 @@ module.exports = function array_udiff_uassoc(arr1) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2238,7 +2330,7 @@ module.exports = function array_uintersect(arr1) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2291,7 +2383,7 @@ module.exports = function array_uintersect_uassoc(arr1) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 'use strict';
 
 module.exports = function array_unique(inputArr) {
@@ -2340,7 +2432,7 @@ module.exports = function array_unique(inputArr) {
   return tmpArr2;
 };
 
-},{}],46:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 "use strict";
 
 module.exports = function array_unshift(array) {
@@ -2362,7 +2454,7 @@ module.exports = function array_unshift(array) {
   return arguments[0].length;
 };
 
-},{}],47:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 'use strict';
 
 module.exports = function array_values(input) {
@@ -2383,7 +2475,7 @@ module.exports = function array_values(input) {
   return tmpArr;
 };
 
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -2425,7 +2517,7 @@ module.exports = function array_walk(array, funcname, userdata) {
   return true;
 };
 
-},{}],49:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -2475,7 +2567,7 @@ module.exports = function array_walk_recursive(array, funcname, userdata) {
   return true;
 };
 
-},{}],50:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2599,7 +2691,7 @@ module.exports = function arsort(inputArr, sortFlags) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../i18n/i18n_loc_get_default":75,"../info/ini_get":76,"../strings/strnatcmp":78}],51:[function(require,module,exports){
+},{"../i18n/i18n_loc_get_default":76,"../info/ini_get":77,"../strings/strnatcmp":79}],52:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2723,7 +2815,7 @@ module.exports = function asort(inputArr, sortFlags) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../i18n/i18n_loc_get_default":75,"../info/ini_get":76,"../strings/strnatcmp":78}],52:[function(require,module,exports){
+},{"../i18n/i18n_loc_get_default":76,"../info/ini_get":77,"../strings/strnatcmp":79}],53:[function(require,module,exports){
 'use strict';
 
 module.exports = function count(mixedVar, mode) {
@@ -2767,7 +2859,7 @@ module.exports = function count(mixedVar, mode) {
   return cnt;
 };
 
-},{}],53:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2817,7 +2909,7 @@ module.exports = function current(arr) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],54:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2894,7 +2986,7 @@ module.exports = function each(arr) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],55:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2957,7 +3049,7 @@ module.exports = function end(arr) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],56:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 'use strict';
 
 module.exports = function in_array(needle, haystack, argStrict) {
@@ -3003,11 +3095,12 @@ module.exports = function in_array(needle, haystack, argStrict) {
   return false;
 };
 
-},{}],57:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 'use strict';
 
 module.exports['array_change_key_case'] = require('./array_change_key_case');
 module.exports['array_chunk'] = require('./array_chunk');
+module.exports['array_column'] = require('./array_column');
 module.exports['array_combine'] = require('./array_combine');
 module.exports['array_count_values'] = require('./array_count_values');
 module.exports['array_diff'] = require('./array_diff');
@@ -3079,7 +3172,7 @@ module.exports['uasort'] = require('./uasort');
 module.exports['uksort'] = require('./uksort');
 module.exports['usort'] = require('./usort');
 
-},{"./array_change_key_case":2,"./array_chunk":3,"./array_combine":4,"./array_count_values":5,"./array_diff":6,"./array_diff_assoc":7,"./array_diff_key":8,"./array_diff_uassoc":9,"./array_diff_ukey":10,"./array_fill":11,"./array_fill_keys":12,"./array_filter":13,"./array_flip":14,"./array_intersect":15,"./array_intersect_assoc":16,"./array_intersect_key":17,"./array_intersect_uassoc":18,"./array_intersect_ukey":19,"./array_key_exists":20,"./array_keys":21,"./array_map":22,"./array_merge":23,"./array_merge_recursive":24,"./array_multisort":25,"./array_pad":26,"./array_pop":27,"./array_product":28,"./array_push":29,"./array_rand":30,"./array_reduce":31,"./array_replace":32,"./array_replace_recursive":33,"./array_reverse":34,"./array_search":35,"./array_shift":36,"./array_slice":37,"./array_splice":38,"./array_sum":39,"./array_udiff":40,"./array_udiff_assoc":41,"./array_udiff_uassoc":42,"./array_uintersect":43,"./array_uintersect_uassoc":44,"./array_unique":45,"./array_unshift":46,"./array_values":47,"./array_walk":48,"./array_walk_recursive":49,"./arsort":50,"./asort":51,"./count":52,"./current":53,"./each":54,"./end":55,"./in_array":56,"./key":58,"./krsort":59,"./ksort":60,"./natcasesort":61,"./natsort":62,"./next":63,"./pos":64,"./prev":65,"./range":66,"./reset":67,"./rsort":68,"./shuffle":69,"./sizeof":70,"./sort":71,"./uasort":72,"./uksort":73,"./usort":74}],58:[function(require,module,exports){
+},{"./array_change_key_case":2,"./array_chunk":3,"./array_column":4,"./array_combine":5,"./array_count_values":6,"./array_diff":7,"./array_diff_assoc":8,"./array_diff_key":9,"./array_diff_uassoc":10,"./array_diff_ukey":11,"./array_fill":12,"./array_fill_keys":13,"./array_filter":14,"./array_flip":15,"./array_intersect":16,"./array_intersect_assoc":17,"./array_intersect_key":18,"./array_intersect_uassoc":19,"./array_intersect_ukey":20,"./array_key_exists":21,"./array_keys":22,"./array_map":23,"./array_merge":24,"./array_merge_recursive":25,"./array_multisort":26,"./array_pad":27,"./array_pop":28,"./array_product":29,"./array_push":30,"./array_rand":31,"./array_reduce":32,"./array_replace":33,"./array_replace_recursive":34,"./array_reverse":35,"./array_search":36,"./array_shift":37,"./array_slice":38,"./array_splice":39,"./array_sum":40,"./array_udiff":41,"./array_udiff_assoc":42,"./array_udiff_uassoc":43,"./array_uintersect":44,"./array_uintersect_uassoc":45,"./array_unique":46,"./array_unshift":47,"./array_values":48,"./array_walk":49,"./array_walk_recursive":50,"./arsort":51,"./asort":52,"./count":53,"./current":54,"./each":55,"./end":56,"./in_array":57,"./key":59,"./krsort":60,"./ksort":61,"./natcasesort":62,"./natsort":63,"./next":64,"./pos":65,"./prev":66,"./range":67,"./reset":68,"./rsort":69,"./shuffle":70,"./sizeof":71,"./sort":72,"./uasort":73,"./uksort":74,"./usort":75}],59:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -3136,7 +3229,7 @@ module.exports = function key(arr) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],59:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -3256,7 +3349,7 @@ module.exports = function krsort(inputArr, sortFlags) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../i18n/i18n_loc_get_default":75,"../info/ini_get":76,"../strings/strnatcmp":78}],60:[function(require,module,exports){
+},{"../i18n/i18n_loc_get_default":76,"../info/ini_get":77,"../strings/strnatcmp":79}],61:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -3373,7 +3466,7 @@ module.exports = function ksort(inputArr, sortFlags) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../i18n/i18n_loc_get_default":75,"../info/ini_get":76,"../strings/strnatcmp":78}],61:[function(require,module,exports){
+},{"../i18n/i18n_loc_get_default":76,"../info/ini_get":77,"../strings/strnatcmp":79}],62:[function(require,module,exports){
 'use strict';
 
 module.exports = function natcasesort(inputArr) {
@@ -3429,7 +3522,7 @@ module.exports = function natcasesort(inputArr) {
   return sortByReference || populateArr;
 };
 
-},{"../info/ini_get":76,"../strings/strnatcasecmp":77}],62:[function(require,module,exports){
+},{"../info/ini_get":77,"../strings/strnatcasecmp":78}],63:[function(require,module,exports){
 'use strict';
 
 module.exports = function natsort(inputArr) {
@@ -3484,7 +3577,7 @@ module.exports = function natsort(inputArr) {
   return sortByReference || populateArr;
 };
 
-},{"../info/ini_get":76,"../strings/strnatcmp":78}],63:[function(require,module,exports){
+},{"../info/ini_get":77,"../strings/strnatcmp":79}],64:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -3541,7 +3634,7 @@ module.exports = function next(arr) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],64:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 'use strict';
 
 module.exports = function pos(arr) {
@@ -3556,7 +3649,7 @@ module.exports = function pos(arr) {
   return current(arr);
 };
 
-},{"../array/current":53}],65:[function(require,module,exports){
+},{"../array/current":54}],66:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -3611,7 +3704,7 @@ module.exports = function prev(arr) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],66:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 "use strict";
 
 module.exports = function range(low, high, step) {
@@ -3661,7 +3754,7 @@ module.exports = function range(low, high, step) {
   return matrix;
 };
 
-},{}],67:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -3717,7 +3810,7 @@ module.exports = function reset(arr) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],68:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -3833,7 +3926,7 @@ module.exports = function rsort(inputArr, sortFlags) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../i18n/i18n_loc_get_default":75,"../info/ini_get":76,"../strings/strnatcmp":78}],69:[function(require,module,exports){
+},{"../i18n/i18n_loc_get_default":76,"../info/ini_get":77,"../strings/strnatcmp":79}],70:[function(require,module,exports){
 'use strict';
 
 module.exports = function shuffle(inputArr) {
@@ -3879,7 +3972,7 @@ module.exports = function shuffle(inputArr) {
   return sortByReference || populateArr;
 };
 
-},{"../info/ini_get":76}],70:[function(require,module,exports){
+},{"../info/ini_get":77}],71:[function(require,module,exports){
 'use strict';
 
 module.exports = function sizeof(mixedVar, mode) {
@@ -3895,7 +3988,7 @@ module.exports = function sizeof(mixedVar, mode) {
   return count(mixedVar, mode);
 };
 
-},{"../array/count":52}],71:[function(require,module,exports){
+},{"../array/count":53}],72:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -4014,7 +4107,7 @@ module.exports = function sort(inputArr, sortFlags) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../i18n/i18n_loc_get_default":75,"../info/ini_get":76}],72:[function(require,module,exports){
+},{"../i18n/i18n_loc_get_default":76,"../info/ini_get":77}],73:[function(require,module,exports){
 'use strict';
 
 module.exports = function uasort(inputArr, sorter) {
@@ -4074,7 +4167,7 @@ module.exports = function uasort(inputArr, sorter) {
   return sortByReference || populateArr;
 };
 
-},{"../info/ini_get":76}],73:[function(require,module,exports){
+},{"../info/ini_get":77}],74:[function(require,module,exports){
 'use strict';
 
 module.exports = function uksort(inputArr, sorter) {
@@ -4146,7 +4239,7 @@ module.exports = function uksort(inputArr, sorter) {
   return sortByReference || populateArr;
 };
 
-},{"../info/ini_get":76}],74:[function(require,module,exports){
+},{"../info/ini_get":77}],75:[function(require,module,exports){
 'use strict';
 
 module.exports = function usort(inputArr, sorter) {
@@ -4205,7 +4298,7 @@ module.exports = function usort(inputArr, sorter) {
   return sortByReference || populateArr;
 };
 
-},{"../info/ini_get":76}],75:[function(require,module,exports){
+},{"../info/ini_get":77}],76:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -4233,7 +4326,7 @@ module.exports = function i18n_loc_get_default() {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],76:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -4263,7 +4356,7 @@ module.exports = function ini_get(varname) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],77:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 'use strict';
 
 module.exports = function strnatcasecmp(a, b) {
@@ -4291,7 +4384,7 @@ module.exports = function strnatcasecmp(a, b) {
   return strnatcmp(_phpCastString(a).toLowerCase(), _phpCastString(b).toLowerCase());
 };
 
-},{"../_helpers/_phpCastString":1,"../strings/strnatcmp":78}],78:[function(require,module,exports){
+},{"../_helpers/_phpCastString":1,"../strings/strnatcmp":79}],79:[function(require,module,exports){
 'use strict';
 
 module.exports = function strnatcmp(a, b) {
@@ -4411,7 +4504,7 @@ module.exports = function strnatcmp(a, b) {
   return (iBeforeStrEnd > jBeforeStrEnd) - (iBeforeStrEnd < jBeforeStrEnd);
 };
 
-},{"../_helpers/_phpCastString":1}],79:[function(require,module,exports){
+},{"../_helpers/_phpCastString":1}],80:[function(require,module,exports){
 "use strict";
 
 module.exports = function is_int(mixedVar) {
@@ -4437,6 +4530,6 @@ module.exports = function is_int(mixedVar) {
   return mixedVar === +mixedVar && isFinite(mixedVar) && !(mixedVar % 1);
 };
 
-},{}],80:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 phpArray=require('locutus/php/array/index');
-},{"locutus/php/array/index":57}]},{},[80]);
+},{"locutus/php/array/index":58}]},{},[81]);
