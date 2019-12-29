@@ -1,6 +1,6 @@
-var ZQ = {
+let ZQ = {
     //region URL
-    zqseturl: function (key, value, href) {
+    zqsetkv: function (key, value, href) {
         var searchreg = new RegExp("&" + key + "=((?!&).)*&");
         var kvstr = key + "=" + value; //子串
         var anchor = ZQ.zqgetanchor(href); //拿到锚点
@@ -63,7 +63,7 @@ var ZQ = {
         if (curpage > 1) {
             curpage--;
         }
-        var url = ZQ.zqseturl('page' + i, curpage, location.href);
+        var url = ZQ.zqsetkv('page' + i, curpage, location.href);
         location.href = url;
     },
 
@@ -74,61 +74,21 @@ var ZQ = {
         if (curpage < Number(pgcount)) {
             curpage++;
         }
-        var url = ZQ.zqseturl('page' + i, curpage, location.href);
+        var url = ZQ.zqsetkv('page' + i, curpage, location.href);
         location.href = url;
     },
 
     mypageto: function (curpage, index) {
         var i = index ? index : "";
-        var url = ZQ.zqseturl('page' + i, curpage, location.href);
+        var url = ZQ.zqsetkv('page' + i, curpage, location.href);
         location.href = url;
     },
     //#endregion
 
-    //#region 表单
-    inputfileChange: function (extArrWithDot) {
-        //在input[type=file]用call调用此方法，this代表input,如：inputfileChange.call(this,[])，扩展名数组别忘记带英文点
-        //需要jquery支持
-        var val = this.value.toLowerCase();
-        var check = false;
-        for (var i = 0; i < extArrWithDot.length; i++) {
-            var extlen = extArrWithDot[i].length;
-            var ext = extArrWithDot[i].toLowerCase();
-            if (val.right(extlen) === ext) {
-                check = true;
-            }
-        }
-        if (check == false) {
-            alert("文件格式错误！");
-        } else {
-            var par = jQuery(this).parent("*").eq(0);
-            var name = jQuery(this).attr('name');
-            var that = jQuery("<input type='file' name='" + name + "' />");
-            jQuery(this).remove();
-            par.prepend(that);
-        }
-    },
-    //#endregion
-
     //#region 其他
-    runInterval: function runInterval(intvalID, overcondition, intvalFunc, intval) {
-        zqintval = typeof zqintval === "undefined" ? [] : zqintval;
-        var over = overcondition;
-        var func = intvalFunc;
-        var int = intval;
-        zqintval[intvalID] = setInterval(function () {
-            if (eval("(" + over + ")") === true) {
-                clearInterval(zqintval[intvalID]);
-                zqintval[intvalID] = null;
-            } else {
-                func();
-            }
-        }, int);
-    },
     zqdelHtmlTag: function (str) {
         return str.replace(/<[^>]+>/g, ""); //去掉所有的html标记
     },
-
     zqstrlen: function (str) {
         var len = 0;
         for (var i = 0; i < str.length; i++) {
@@ -194,8 +154,8 @@ var ZQ = {
     String.prototype.rtrim = function () {
         return this.replace(/(\s*$)/g, "");
     };
-    String.prototype.seturl = function (key, val) {
-        return ZQ.zqseturl(key, val, this);
+    String.prototype.setkv = function (key, val) {
+        return ZQ.zqsetkv(key, val, this);
     };
     String.prototype.setanchor = function (anchor) {
         var urlremoveanchor=this.removeanchor();
@@ -227,3 +187,5 @@ var ZQ = {
     };
 //endregion
 })();
+
+export default ZQ;
