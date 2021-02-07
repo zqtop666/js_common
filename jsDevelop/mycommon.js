@@ -1,4 +1,4 @@
-let ZQ = {
+var ZQ = {
     //region URL
     zqsetkv: function (key, value, href) {
         var searchreg = new RegExp("&" + key + "=((?!&).)*&");
@@ -188,4 +188,3 @@ let ZQ = {
 //endregion
 })();
 
-export default ZQ;
